@@ -23,4 +23,3 @@
     - --source           =.
     - --entry-point      = main
     - --runtime          = python38
-    - --trigger-topic
