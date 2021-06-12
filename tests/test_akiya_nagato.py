@@ -50,8 +50,6 @@ def test_get_soup():
     except Exception:
         pytest.fail("Unexpected Exception")
 
-    assert soup
-
 
 def test_get_fudosan_generator():
     fudosan_gen = Generator
