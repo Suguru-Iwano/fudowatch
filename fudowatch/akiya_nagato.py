@@ -38,18 +38,6 @@ def get_soup(load_url: str) -> BeautifulSoup:
     return BeautifulSoup(html.content, 'html.parser', from_encoding='utf-8')
 
 
-# def range_to_min(s: str) -> str:
-#     """
-#     値段範囲指定対応
-#     100~200 -> 100
-#     ※1つ目の〜と2つ目の〜は別物
-#     """
-#     s = s.replace('〜', '~').replace('～', '~')
-#     if '~' in s:
-#         s = s[:s.find('~')]
-#     return s
-
-
 def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
     # 空き家テーブルを取得
     table = soup.find('table', {'class': 'table_basic01'})

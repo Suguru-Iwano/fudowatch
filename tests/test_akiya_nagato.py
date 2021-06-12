@@ -53,18 +53,6 @@ def test_get_soup():
     assert soup
 
 
-# def test_range_to_min():
-#     assert range_to_min('1~2') == '1'
-#     assert range_to_min('~2') == ''
-#     assert range_to_min('1〜2') == '1'
-#     assert range_to_min('〜2') == ''
-#     assert range_to_min('1 ~ 2') == '1 '
-#     assert range_to_min('1 ～ 2') == '1 '
-#     assert range_to_min('1') == '1'
-#     assert range_to_min('1,000') == '1,000'
-#     assert range_to_min('') == ''
-
-
 def test_get_fudosan_generator():
     fudosan_gen = Generator
     # 例外が起こらないことを確認
