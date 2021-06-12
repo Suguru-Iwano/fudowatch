@@ -1,0 +1,42 @@
+ steps:
+
+  # - name: 'docker.io/library/python:3.8'
+  #   entrypoint: 'bash'
+  #   args:
+  #   - '-c'
+  #   - |
+  #     pip install -r requirements.txt
+  #     cd stocker/tests
+  #     pytest -s ./
+  #   # env:
+  #   #   - 'HOGE=fuga'
+
+  - name: 'python:3.8-slim'
+    id: Test
+    entrypoint: /bin/sh
+    args:
+    - -c
+    - |
+      pip install -r cloudbuild/requirements.txt
+      pytest -s ./
+    env:
+    - 'PROJECT=$PROJECT_ID'
+    - 'TOPIC=$_PS_TOPIC_NAME'
+
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: Deploy
+    args:
+    - functions
+    - deploy
+    - stocker-daily
+    - --region           = asia-northeast1
+    - --entry-point      = __main__
+    - --ignore-file      = .gitignore, cloudbuild.yaml
+    - --ingress-settings = internal-only
+    - --memory           = 256MB
+    - --runtime          = python38
+
+# 置換用（vscode上、エラーになるけどいける）
+substitutions:
+  _PS_TOPIC_NAME: pubsub_topic
