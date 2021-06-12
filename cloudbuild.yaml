@@ -12,7 +12,7 @@
     - 'PROJECT=$PROJECT_ID'
     - 'TOPIC=$_PS_TOPIC_NAME'
 
-  - name: 'gcr.io/cloud-builders/gcloud'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: Deploy
     args:
     - gcloud
