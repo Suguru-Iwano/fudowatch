@@ -26,7 +26,6 @@
   - name: 'gcr.io/cloud-builders/gcloud'
     id: Deploy
     args:
-    - gcloud
     - functions
     - deploy
     - akiyabank_nagato
