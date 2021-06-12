@@ -23,19 +23,18 @@
     - 'PROJECT=$PROJECT_ID'
     - 'TOPIC=$_PS_TOPIC_NAME'
 
-
   - name: 'gcr.io/cloud-builders/gcloud'
     id: Deploy
     args:
+    - gcloud
     - functions
     - deploy
-    - stocker-daily
+    - akiyabank_nagato
     - --region           = asia-northeast1
-    - --entry-point      = __main__
-    - --ignore-file      = .gitignore, cloudbuild.yaml
-    - --ingress-settings = internal-only
-    - --memory           = 256MB
+    - --trigger-http
+    - --entry-point      = main
     - --runtime          = python38
+    - --ignore-file      = .gitignore, cloudbuild.yaml
 
 # 置換用（vscode上、エラーになるけどいける）
 substitutions:
