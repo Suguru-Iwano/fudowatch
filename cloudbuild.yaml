@@ -21,5 +21,6 @@
     - akiyabank_nagato
     - --region=asia-northeast1
     - --source=.
-    - --entry-point=main
+    - --entry-point=akiyabank_nagato
     - --runtime=python38
+    - --trigger-topic

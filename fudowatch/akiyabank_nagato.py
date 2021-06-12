@@ -105,7 +105,7 @@ def read_config(config_ini_path: str) -> configparser.ConfigParser:
     return config_ini
 
 
-def main(event, context):
+def akiyabank_nagato_main():
     try:
         config_ini_path = 'config.ini'
         config_ini = read_config(config_ini_path)
