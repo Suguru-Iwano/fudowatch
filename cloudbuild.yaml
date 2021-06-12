@@ -19,7 +19,7 @@
     - functions
     - deploy
     - akiyabank_nagato
-    - --region           = asia-northeast1
-    - --source           =.
-    - --entry-point      = main
-    - --runtime          = python38
+    - --region=asia-northeast1
+    - --source=.
+    - --entry-point=main
+    - --runtime=python38
