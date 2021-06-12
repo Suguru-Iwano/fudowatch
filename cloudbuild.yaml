@@ -1,16 +1,5 @@
  steps:
 
-  # - name: 'docker.io/library/python:3.8'
-  #   entrypoint: 'bash'
-  #   args:
-  #   - '-c'
-  #   - |
-  #     pip install -r requirements.txt
-  #     cd stocker/tests
-  #     pytest -s ./
-  #   # env:
-  #   #   - 'HOGE=fuga'
-
   - name: 'python:3.8-slim'
     id: Test
     entrypoint: /bin/sh
@@ -26,15 +15,12 @@
   - name: 'gcr.io/cloud-builders/gcloud'
     id: Deploy
     args:
+    - gcloud
     - functions
     - deploy
     - akiyabank_nagato
     - --region           = asia-northeast1
-    - --trigger-http
+    - --source           =.
+    - --trigger-topic
     - --entry-point      = main
     - --runtime          = python38
-    - --ignore-file      = .gitignore, cloudbuild.yaml
-
-# 置換用（vscode上、エラーになるけどいける）
-substitutions:
-  _PS_TOPIC_NAME: pubsub_topic
