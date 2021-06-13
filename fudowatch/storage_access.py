@@ -6,7 +6,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 
-class FiresoreCrient():
+class FiresoreClient():
 
     def __init__(self):
         project_id = getenv('GCLOUD_PROJECT')
