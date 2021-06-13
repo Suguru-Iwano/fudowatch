@@ -3,8 +3,7 @@ from os import getenv
 from typing import Generator, List, Union
 
 import firebase_admin
-from firebase_admin import credentials
-from google.cloud import firestore
+from firebase_admin import credentials, firestore
 
 
 class FiresoreCrient():
@@ -16,13 +15,14 @@ class FiresoreCrient():
             cred = credentials.Certificate(
                 './tests/key/fudowatch-accesskey.json')
             firebase_admin.initialize_app(cred)
+
         # GCPの場合
         else:
             cred = credentials.ApplicationDefault()
             firebase_admin.initialize_app(cred, {
                 'projectId': project_id,
             })
-        self.db = firestore.Client()
+        self.db = firestore.client()
 
     def add_object_list(self, collection_name: str, document_param_name: str, object_list: Union[List, Generator]):
         collection = self.db.collection(collection_name)

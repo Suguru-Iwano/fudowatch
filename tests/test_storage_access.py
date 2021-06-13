@@ -1,7 +1,5 @@
 from os import getenv
-import firebase_admin
 import pytest
-from firebase_admin import credentials, firestore
 from fudowatch.storage_access import FiresoreCrient
 
 
