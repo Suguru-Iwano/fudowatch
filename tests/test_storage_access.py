@@ -1,6 +1,6 @@
 from os import getenv
 import pytest
-from fudowatch.storage_access import FiresoreCrient
+from fudowatch.storage_access import FiresoreClient
 
 
 class SampleObject():
@@ -18,7 +18,7 @@ def test_storage_access():
 
     # 例外が起こらないことを確認
     try:
-        client = FiresoreCrient()
+        client = FiresoreClient()
         client.add_object_list('test', 'name', test_obj_list)
         client.add_object_list('test/test2/test3', 'name', test_obj_list)
 
