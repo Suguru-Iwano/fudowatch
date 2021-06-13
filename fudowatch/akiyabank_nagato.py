@@ -113,8 +113,6 @@ def akiyabank_nagato_main():
         # iniの値取得
         load_url = config_ini.get('DEFAULT', 'Url')
         fudosan_gen = get_fudosan_generator(get_soup(load_url))
-        for i in fudosan_gen:
-            pass
 
     except Exception as e:
         print(traceback.format_exc())
