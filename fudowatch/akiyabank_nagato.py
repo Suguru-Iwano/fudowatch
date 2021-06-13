@@ -1,6 +1,5 @@
 import configparser
 import errno
-import json
 import os
 import re
 import traceback
@@ -10,12 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-class Jsonable:
-    def to_json(self):
-        return json.dumps(self.__dict__, ensure_ascii=False, indent=4)
-
-
-class Fudosan(Jsonable):
+class Fudosan():
 
     def __init__(self, name='', price=-1, rent=-1, parkings=0, url_detail='', url_image='', else_data_list=[]):
         self.name = name
