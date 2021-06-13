@@ -1,3 +1,4 @@
+from os import getenv
 import firebase_admin
 import pytest
 from firebase_admin import credentials, firestore
@@ -17,9 +18,12 @@ def test_storage_access():
     test_obj_list = [TestObject(),
                      TestObject('name2', 2, 2.2, True, [1, 2])]
     # 鍵の設定
-    cred = credentials.Certificate('./tests/key/fudowatch-accesskey.json')
-    firebase_admin.initialize_app(cred)
-    db = firestore.client()
+    db = None
+    # 以下環境変数がない場合は、ローカルと判断
+    if not getenv('GCLOUD_PROJECT'):
+        cred = credentials.Certificate('./tests/key/fudowatch-accesskey.json')
+        firebase_admin.initialize_app(cred)
+        db = firestore.client()
 
     # 例外が起こらないことを確認
     try:
