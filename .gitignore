@@ -1,5 +1,5 @@
 .vscode/
-keys/
+*/key/*
 .gitignore
 
 # Byte-compiled / optimized / DLL files
