@@ -7,6 +7,7 @@ from typing import Generator
 
 import requests
 from bs4 import BeautifulSoup
+
 from fudowatch.storage_access import FiresoreClient
 
 
