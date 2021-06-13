@@ -11,6 +11,7 @@
     env:
       - 'PROJECT=$PROJECT_ID'
       - 'TOPIC=$_PS_TOPIC_NAME'
+      - 'GCLOUD_PROJECT=$PROJECT_ID'
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: Deploy
@@ -24,5 +25,3 @@
       - --entry-point=akiyabank_nagato
       - --runtime=python38
       - --trigger-topic=start_watch
-    env:
-      - 'GCLOUD_PROJECT=fudowatch'
