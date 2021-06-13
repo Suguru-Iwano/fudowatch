@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from fudowatch.akiyabank_nagato import (Fudosan, get_fudosan_generator,
                                         get_numbers_first, get_soup,
                                         read_config)
+from main import akiyabank_nagato
 
 
 def test_Fudosan():
@@ -104,3 +105,12 @@ def test_get_fudosan_generator():
     assert fudosan_5.name == '224 三隅上'
     assert fudosan_5.parkings == 0
     assert fudosan_5.else_data_list == ['畑付き', '家財撤去済']
+
+
+def test_akiyabank_nagato():
+    # 例外が起こらないことを確認
+    try:
+        akiyabank_nagato(None, None)
+
+    except Exception:
+        pytest.fail("Unexpected Exception")
