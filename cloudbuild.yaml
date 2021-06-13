@@ -1,7 +1,11 @@
  steps:
+  - name: gcr.io/cloud-builders/gcloud
+    id: setting
+    entrypoint: 'bash'
+    args: [ '-c', "gcloud secrets versions access latest --secret=LINE_TOKEN --format='get(payload.data)' | tr '_-' '/+' | base64 -d > line_token.txt" ]
 
   - name: 'python:3.8-slim'
-    id: Test
+    id: test
     entrypoint: /bin/sh
     args:
       - -c
@@ -12,9 +16,10 @@
       - 'PROJECT=$PROJECT_ID'
       - 'TOPIC=$_PS_TOPIC_NAME'
       - 'GCLOUD_PROJECT=$PROJECT_ID'
+      - 'LINE_TOKEN < line_token.txt'
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    id: Deploy
+    id: deploy
     args:
       - gcloud
       - functions
@@ -25,3 +30,5 @@
       - --entry-point=akiyabank_nagato
       - --runtime=python38
       - --trigger-topic=start_watch
+    env:
+      - 'LINE_TOKEN < line_token.txt'
