@@ -23,4 +23,4 @@
     - --source=.
     - --entry-point=akiyabank_nagato
     - --runtime=python38
-    - --trigger-topic
+    - --trigger-topic=projects/fudowatch/topics/start_watch
