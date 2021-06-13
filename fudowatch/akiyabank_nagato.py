@@ -85,7 +85,7 @@ def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
                 break
         if rent_str:
             if 'x' not in rent_str:
-                fudosan.rent = get_numbers_first(rent_str) / 1000
+                fudosan.rent = get_numbers_first(rent_str) / 10000
             del info_list[index_rent]
 
         # 駐車場情報の有無を確認
