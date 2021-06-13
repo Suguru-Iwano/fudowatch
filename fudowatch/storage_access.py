@@ -9,19 +9,21 @@ from firebase_admin import credentials, firestore
 class FiresoreClient():
 
     def __init__(self):
-        project_id = getenv('GCLOUD_PROJECT')
-        # 環境変数「GCLOUD_PROJECT」がない場合は、ローカルと判断
-        if not project_id:
-            cred = credentials.Certificate(
-                './tests/key/fudowatch-accesskey.json')
-            firebase_admin.initialize_app(cred)
+        # 初期化済みかを判定する
+        if not firebase_admin._apps:
+            project_id = getenv('GCLOUD_PROJECT')
+            # 環境変数「GCLOUD_PROJECT」がない場合は、ローカルと判断
+            if not project_id:
+                cred = credentials.Certificate(
+                    './tests/key/fudowatch-accesskey.json')
+                firebase_admin.initialize_app(cred)
 
-        # GCPの場合
-        else:
-            cred = credentials.ApplicationDefault()
-            firebase_admin.initialize_app(cred, {
-                'projectId': project_id,
-            })
+            # GCPの場合
+            else:
+                cred = credentials.ApplicationDefault()
+                firebase_admin.initialize_app(cred, {
+                    'projectId': project_id,
+                })
         self.db = firestore.client()
 
     def add_object_list(self, collection_name: str, document_param_name: str, object_list: Union[List, Generator]):
