@@ -84,7 +84,7 @@ def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
                 index_rent = i
                 break
         if rent_str:
-            if 'x' not in rent_str:
+            if '×' not in rent_str:
                 fudosan.rent = get_numbers_first(rent_str) / 10000
             del info_list[index_rent]
 
