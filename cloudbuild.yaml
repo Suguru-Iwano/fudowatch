@@ -4,23 +4,25 @@
     id: Test
     entrypoint: /bin/sh
     args:
-    - -c
-    - |
-      pip install -r requirements.txt
-      pytest -s ./
+      - -c
+      - |
+        pip install -r requirements.txt
+        pytest -s ./
     env:
-    - 'PROJECT=$PROJECT_ID'
-    - 'TOPIC=$_PS_TOPIC_NAME'
+      - 'PROJECT=$PROJECT_ID'
+      - 'TOPIC=$_PS_TOPIC_NAME'
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: Deploy
     args:
-    - gcloud
-    - functions
-    - deploy
-    - akiyabank_nagato
-    - --region=asia-northeast1
-    - --source=.
-    - --entry-point=akiyabank_nagato
-    - --runtime=python38
-    - --trigger-topic=start_watch
+      - gcloud
+      - functions
+      - deploy
+      - akiyabank_nagato
+      - --region=asia-northeast1
+      - --source=.
+      - --entry-point=akiyabank_nagato
+      - --runtime=python38
+      - --trigger-topic=start_watch
+    env:
+      - 'GCLOUD_PROJECT=fudowatch'
