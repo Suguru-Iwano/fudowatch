@@ -9,19 +9,20 @@ from google.cloud import firestore
 
 class FiresoreCrient():
 
-    def __init__(self, db=None):
-        if db:
-            self.db = db
-
+    def __init__(self):
+        project_id = getenv('GCLOUD_PROJECT')
+        # 環境変数「GCLOUD_PROJECT」がない場合は、ローカルと判断
+        if not project_id:
+            cred = credentials.Certificate(
+                './tests/key/fudowatch-accesskey.json')
+            firebase_admin.initialize_app(cred)
+        # GCPの場合
         else:
-            # Project ID is determined by the GCLOUD_PROJECT environment variable
-            project_id = getenv('GCLOUD_PROJECT')
             cred = credentials.ApplicationDefault()
-
             firebase_admin.initialize_app(cred, {
                 'projectId': project_id,
             })
-            self.db = firestore.Client()
+        self.db = firestore.Client()
 
     def add_object_list(self, collection_name: str, document_param_name: str, object_list: Union[List, Generator]):
         collection = self.db.collection(collection_name)
