@@ -68,7 +68,7 @@ def test_get_fudosan_generator():
     # スペースで囲まれている場合、stripされることの確認
     assert fudosan_1.name == '228 三隅中'
     assert fudosan_1.price == 1640
-    assert fudosan_1.rent == 20000
+    assert fudosan_1.rent == 2
     assert fudosan_1.parkings == 1
     assert fudosan_1.url_detail == 'https://www.nagatoteiju.com/akiya/228'
     assert fudosan_1.url_image == 'https://www.nagatoteiju.com/cms/wp-content/uploads/IMG_5878_R.jpg'
@@ -88,7 +88,7 @@ def test_get_fudosan_generator():
     # 値段範囲指定の場合
     assert fudosan_3.name == '226 油谷河原'
     assert fudosan_3.price == 1680
-    assert fudosan_3.rent == 20000
+    assert fudosan_3.rent == 2
     assert fudosan_3.parkings == 1
     assert fudosan_3.else_data_list == ['倉庫2棟', '雑種地あり']
 
