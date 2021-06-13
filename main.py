@@ -1,4 +1,4 @@
-from .fudowatch.akiyabank_nagato import akiyabank_nagato_main
+from fudowatch.akiyabank_nagato import akiyabank_nagato_main
 
 
 def akiyabank_nagato(event, context):
