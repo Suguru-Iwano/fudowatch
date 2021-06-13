@@ -88,7 +88,8 @@ def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
                 fudosan.parkings = 1
             del info_list[index_parking]
 
-        fudosan.else_data_list = info_list[2:]
+        else_data_list = info_list[2:7]  # else_data_listは５要素のみ
+        fudosan.else_data_list = else_data_list
 
         yield fudosan
 
@@ -111,7 +112,10 @@ def akiyabank_nagato_main():
         config_ini = read_config(config_ini_path)
         # iniの値取得
         load_url = config_ini.get('DEFAULT', 'Url')
-        get_fudosan_generator(get_soup(load_url))
+        fudosan_gen = get_fudosan_generator(get_soup(load_url))
+        for i in fudosan_gen:
+            pass
 
     except Exception as e:
         print(traceback.format_exc())
+        raise
