@@ -2,9 +2,9 @@ from typing import Generator
 
 import pytest
 from bs4 import BeautifulSoup
-from fudowatch.akiya_nagato import (Fudosan, get_fudosan_generator,
-                                    get_numbers_first, get_soup,
-                                    read_config)
+from fudowatch.akiyabank_nagato import (Fudosan, get_fudosan_generator,
+                                        get_numbers_first, get_soup,
+                                        read_config)
 
 
 def test_Fudosan():
@@ -55,7 +55,7 @@ def test_get_fudosan_generator():
     fudosan_gen = Generator
     # 例外が起こらないことを確認
     try:
-        with open('./tests/testHTML/akiya_itiran.html', 'r', encoding='utf-8') as f:
+        with open('./tests/testHTML/akiyabank_nagato/akiya_itiran.html', 'r', encoding='utf-8') as f:
             html_str = f.read()
             soup = BeautifulSoup(html_str, "html.parser")
             fudosan_gen = get_fudosan_generator(soup)
