@@ -94,16 +94,16 @@ def test_get_fudosan_generator():
 
     fudosan_4 = next(fudosan_gen)
     # 値段0円、駐車場３台
-    # else_data_listは５要素のみ
     assert fudosan_4.name == '225 俵山湯町'
     assert fudosan_4.price == 0
     assert fudosan_4.rent == 0
     assert fudosan_4.parkings == 3
-    assert fudosan_4.else_data_list == ['要素１', '要素２', '要素３', '要素４', '要素５']
 
     fudosan_5 = next(fudosan_gen)
     # 駐車場のキーなし
     assert fudosan_5.name == '224 三隅上'
+    assert fudosan_5.price == -1
+    assert fudosan_5.rent == -1
     assert fudosan_5.parkings == 0
     assert fudosan_5.else_data_list == ['畑付き', '家財撤去済']
 

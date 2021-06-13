@@ -13,7 +13,7 @@ from fudowatch.storage_access import FiresoreClient
 
 class Fudosan():
 
-    def __init__(self, name='', price=-1, rent=-1, parkings=0, url_detail='', url_image='', else_data_list=[]):
+    def __init__(self, name='', price=-1, rent=-1.0, parkings=0, url_detail='', url_image='', else_data_list=[]):
         self.name = name
         self.price = price
         self.rent = rent
@@ -64,13 +64,29 @@ def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
         info_list = [s for s in info_list if s != '']  # リスト内空白を除去
 
         # 空き家情報をパース
-        price_str = info_list[0]
-        if ('売買' in price_str) and ('×' not in price_str):
-            fudosan.price = get_numbers_first(price_str)
+        price_str = ''
+        index_price = 0
+        for i, s in enumerate(info_list):
+            if '売買' in s:
+                price_str = s
+                index_price = i
+                break
+        if price_str:
+            if '×' not in price_str:
+                fudosan.price = get_numbers_first(price_str)
+            del info_list[index_price]
 
-        rent_str = info_list[1]
-        if ('賃貸' in rent_str) and ('×' not in rent_str):
-            fudosan.rent = get_numbers_first(rent_str)
+        rent_str = ''
+        index_rent = 0
+        for i, s in enumerate(info_list):
+            if '賃貸' in s:
+                rent_str = s
+                index_rent = i
+                break
+        if rent_str:
+            if 'x' not in rent_str:
+                fudosan.rent = get_numbers_first(rent_str) / 1000
+            del info_list[index_rent]
 
         # 駐車場情報の有無を確認
         # あとでリストから消して else_data_list を作りたいため、enumerate
@@ -80,6 +96,7 @@ def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
             if '駐車場' in s:
                 parking = s
                 index_parking = i
+                break
 
         if parking:
             # 駐車場が複数あるとき
@@ -90,7 +107,7 @@ def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
                 fudosan.parkings = 1
             del info_list[index_parking]
 
-        else_data_list = info_list[2:7]  # else_data_listは５要素のみ
+        else_data_list = info_list
         fudosan.else_data_list = else_data_list
 
         yield fudosan
