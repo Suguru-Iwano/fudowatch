@@ -16,7 +16,7 @@
       - 'PROJECT=$PROJECT_ID'
       - 'TOPIC=$_PS_TOPIC_NAME'
       - 'GCLOUD_PROJECT=$PROJECT_ID'
-      - 'LINE_TOKEN < line_token.txt'
+      - 'LINE_TOKEN= < line_token.txt'
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: deploy
@@ -31,4 +31,4 @@
       - --runtime=python38
       - --trigger-topic=start_watch
     env:
-      - 'LINE_TOKEN < line_token.txt'
+      - 'LINE_TOKEN= < line_token.txt'
