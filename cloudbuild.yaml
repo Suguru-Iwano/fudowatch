@@ -1,4 +1,4 @@
- steps:
+steps:
   - name: gcr.io/cloud-builders/gcloud
     id: setting
     entrypoint: 'bash'
@@ -6,7 +6,7 @@
 
   - name: 'python:3.8-slim'
     id: test
-    entrypoint: /bin/sh
+    entrypoint: 'bash'
     args:
       - -c
       - |
@@ -16,10 +16,11 @@
       - 'PROJECT=$PROJECT_ID'
       - 'TOPIC=$_PS_TOPIC_NAME'
       - 'GCLOUD_PROJECT=$PROJECT_ID'
-      - 'LINE_TOKEN= < line_token.txt'
+      - 'LINE_TOKEN=$$LINE_TOKEN'
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: deploy
+    entrypoint: 'bash'
     args:
       - gcloud
       - functions
@@ -31,4 +32,9 @@
       - --runtime=python38
       - --trigger-topic=start_watch
     env:
-      - 'LINE_TOKEN= < line_token.txt'
+      - 'LINE_TOKEN=$$LINE_TOKEN'
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/305190566977/secrets/LINE_TOKEN
+    env: LINE_TOKEN
