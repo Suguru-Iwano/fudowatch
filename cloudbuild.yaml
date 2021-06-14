@@ -17,6 +17,7 @@ steps:
       - 'TOPIC=$_PS_TOPIC_NAME'
       - 'GCLOUD_PROJECT=$PROJECT_ID'
       - 'LINE_TOKEN=$$LINE_TOKEN'
+    secretEnv: ['LINE_TOKEN']
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: deploy
@@ -33,6 +34,7 @@ steps:
       - --trigger-topic=start_watch
     env:
       - 'LINE_TOKEN=$$LINE_TOKEN'
+    secretEnv: ['LINE_TOKEN']
 
 availableSecrets:
   secretManager:
