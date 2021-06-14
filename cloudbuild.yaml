@@ -16,14 +16,8 @@ steps:
       - 'PROJECT=$PROJECT_ID'
       - 'TOPIC=$_PS_TOPIC_NAME'
       - 'GCLOUD_PROJECT=$PROJECT_ID'
-      - 'LINE_TOKEN=$$LINE_TOKEN'
-    secretEnv: ['LINE_TOKEN']
-
-availableSecrets:
-  secretManager:
-  - versionName: projects/305190566977/secrets/LINE_TOKEN/versions/1
-    env: 'LINE_TOKEN'
-
+      - 'LINE_TOKEN=$$LINE'
+    secretEnv: ['LINE']
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: deploy
@@ -39,10 +33,10 @@ availableSecrets:
       - --runtime=python38
       - --trigger-topic=start_watch
     env:
-      - 'LINE_TOKEN=$$LINE_TOKEN'
-    secretEnv: ['LINE_TOKEN']
+      - 'LINE_TOKEN=$$LINE'
+    secretEnv: ['LINE']
 
 availableSecrets:
   secretManager:
-  - versionName: projects/305190566977/secrets/LINE_TOKEN/versions/1
-    env: 'LINE_TOKEN'
+  - versionName: projects/305190566977/secrets/LINE/versions/1
+    env: 'LINE'
