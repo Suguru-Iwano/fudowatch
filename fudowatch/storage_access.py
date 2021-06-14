@@ -26,7 +26,8 @@ class FiresoreClient():
                 })
         self.db = firestore.client()
 
-    def add_object_list(self, collection_name: str, document_param_name: str, object_list: Union[List, Generator]):
+    def add_object_list(self, collection_name: str, document_param_name: str,
+                        object_list: Union[List, Generator]):
         collection = self.db.collection(collection_name)
 
         for obj in object_list:
