@@ -36,5 +36,5 @@ steps:
 
 availableSecrets:
   secretManager:
-  - versionName: projects/305190566977/secrets/LINE_TOKEN
-    env: LINE_TOKEN
+  - versionName: projects/305190566977/secrets/LINE_TOKEN/versions/1
+    env: 'LINE_TOKEN'
