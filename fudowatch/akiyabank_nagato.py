@@ -13,7 +13,8 @@ from fudowatch.storage_access import FiresoreClient
 
 class Fudosan():
 
-    def __init__(self, name='', price=-1, rent=-1.0, parkings=0, url_detail='', url_image='', else_data_list=[]):
+    def __init__(self, name='', price=-1, rent=-1.0, parkings=0, url_detail='',
+                 url_image='', else_data_list=[]):
         self.name = name
         self.price = price
         self.rent = rent
@@ -137,6 +138,6 @@ def akiyabank_nagato_main():
         client.add_object_list(
             'fudowatch/akiyabank_nagato/fudo_list', 'name', fudosan_gen)
 
-    except Exception as e:
+    except Exception:
         print(traceback.format_exc())
         raise
