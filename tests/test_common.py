@@ -1,5 +1,12 @@
+import pytest
 from fudowatch.common import send_line
 
 
 def test_send_line():
-    send_line('Write Your Message')
+    # 例外が起こらないことを確認
+    try:
+        res = send_line(message='Write Your Message')
+        assert res.status_code == 200
+
+    except Exception:
+        pytest.fail("Unexpected Exception")
