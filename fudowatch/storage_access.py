@@ -20,6 +20,7 @@ class FiresoreClient():
         self.db = firestore.client()
 
     def get_document_list(self, collection):
+        pass
 
     def add_document_list(self, collection_name: str, document_param_name: str,
                           object_list: Union[List, Generator]):
