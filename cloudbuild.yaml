@@ -1,8 +1,4 @@
 steps:
-  - name: gcr.io/cloud-builders/gcloud
-    id: setting
-    entrypoint: 'bash'
-    args: [ '-c', "gcloud secrets versions access latest --secret=LINE_TOKEN --format='get(payload.data)' | tr '_-' '/+' | base64 -d > line_token.txt" ]
 
   - name: 'python:3.8-slim'
     id: test
