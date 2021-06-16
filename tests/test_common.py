@@ -20,7 +20,7 @@ def test_send_line():
     token = get_secret('fudowatch', 'LINE', '1')
     # 例外が起こらないことを確認
     try:
-        res = send_line(token, 'Write Your Message')
+        res = send_line(token, 'Test')
 
     except Exception as e:
         pytest.fail(e.__class__.__name__ + ': ' + str(e))
