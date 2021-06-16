@@ -37,8 +37,8 @@ def test_read_config():
         config_ini = read_config('config.ini')
         load_url = config_ini.get('DEFAULT', 'Url')
 
-    except Exception:
-        pytest.fail("Unexpected Exception")
+    except Exception as e:
+        pytest.fail(e.__class__.__name__ + ': ' + str(e))
 
     assert load_url
 
@@ -46,23 +46,24 @@ def test_read_config():
 def test_get_soup():
     # 例外が起こらないことを確認
     try:
-        soup = get_soup('https://www.google.com/?hl=ja')
+        get_soup('https://www.google.com/?hl=ja')
 
-    except Exception:
-        pytest.fail("Unexpected Exception")
+    except Exception as e:
+        pytest.fail(e.__class__.__name__ + ': ' + str(e))
 
 
 def test_get_fudosan_generator():
     fudosan_gen = Generator
     # 例外が起こらないことを確認
     try:
-        with open('./tests/testHTML/akiyabank_nagato/akiya_itiran.html', 'r', encoding='utf-8') as f:
+        with open('./tests/testHTML/akiyabank_nagato/akiya_itiran.html',
+                  'r', encoding='utf-8') as f:
             html_str = f.read()
             soup = BeautifulSoup(html_str, "html.parser")
             fudosan_gen = get_fudosan_generator(soup)
 
-    except Exception:
-        pytest.fail("Unexpected Exception")
+    except Exception as e:
+        pytest.fail(e.__class__.__name__ + ': ' + str(e))
 
     fudosan_1 = next(fudosan_gen)
     # スペースで囲まれている場合、stripされることの確認
@@ -113,5 +114,5 @@ def test_akiyabank_nagato():
     try:
         akiyabank_nagato(None, None)
 
-    except Exception:
-        pytest.fail("Unexpected Exception")
+    except Exception as e:
+        pytest.fail(e.__class__.__name__ + ': ' + str(e))

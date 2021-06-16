@@ -1,4 +1,3 @@
-from os import getenv
 
 import pytest
 from fudowatch.storage_access import FiresoreClient
@@ -23,5 +22,5 @@ def test_storage_access():
         client.add_object_list('test', 'name', test_obj_list)
         client.add_object_list('test/test2/test3', 'name', test_obj_list)
 
-    except Exception:
-        pytest.fail("Unexpected Exception")
+    except Exception as e:
+        pytest.fail(e.__class__.__name__ + ': ' + str(e))
