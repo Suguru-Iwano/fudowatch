@@ -19,8 +19,8 @@ def test_storage_access():
     # 例外が起こらないことを確認
     try:
         client = FiresoreClient()
-        client.add_object_list('test', 'name', test_obj_list)
-        client.add_object_list('test/test2/test3', 'name', test_obj_list)
+        client.add_document_list('test', 'name', test_obj_list)
+        client.add_document_list('test/test2/test3', 'name', test_obj_list)
 
     except Exception as e:
         pytest.fail(e.__class__.__name__ + ': ' + str(e))
