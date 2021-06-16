@@ -1,5 +1,6 @@
-pytest==6.2.4
 firebase_admin==5.0.0
-requests==2.25.0
+pytest==6.2.4
+requests==2.25.1
 beautifulsoup4==4.9.3
 protobuf==3.17.3
+google-cloud-secret-manager=2.5.0
