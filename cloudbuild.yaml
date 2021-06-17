@@ -12,8 +12,6 @@ steps:
       - 'PROJECT=$PROJECT_ID'
       - 'TOPIC=$_PS_TOPIC_NAME'
       - 'GCLOUD_PROJECT=$PROJECT_ID'
-      - 'LINE_TOKEN=$$LINE'
-    secretEnv: ['LINE']
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: deploy
@@ -28,11 +26,3 @@ steps:
       - --entry-point=akiyabank_nagato
       - --runtime=python38
       - --trigger-topic=start_watch
-    env:
-      - 'LINE_TOKEN=$$LINE'
-    secretEnv: ['LINE']
-
-availableSecrets:
-  secretManager:
-  - versionName: projects/305190566977/secrets/LINE/versions/1
-    env: 'LINE'

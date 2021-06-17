@@ -18,6 +18,27 @@ def test_Fudosan():
     assert fudosan.url_detail == ''
     assert fudosan.url_image == ''
     assert fudosan.else_data_list == []
+    assert fudosan.is_posted == False
+
+
+def test_Fudosan_from_dict():
+    d = {'name': 'name',
+         'price': 1,
+         # 'rent': 2,
+         'parkings': 3,
+         'url_detail': 'http://detail',
+         # 'url_image': 'http://image',
+         'else_data_list': ['one', 'two']
+         }
+
+    fudosan = Fudosan(**d)
+    assert fudosan.name == 'name'
+    assert fudosan.price == 1
+    assert fudosan.rent == -1
+    assert fudosan.parkings == 3
+    assert fudosan.url_detail == 'http://detail'
+    assert fudosan.url_image == ''
+    assert fudosan.else_data_list == ['one', 'two']
 
 
 def test_get_numbers_first():
@@ -35,7 +56,7 @@ def test_read_config():
     # 例外が起こらないことを確認
     try:
         config_ini = read_config('config.ini')
-        load_url = config_ini.get('DEFAULT', 'Url')
+        load_url = config_ini.get('AKIYABANK_NAGATO', 'Url')
 
     except Exception as e:
         pytest.fail(e.__class__.__name__ + ': ' + str(e))

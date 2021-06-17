@@ -8,13 +8,14 @@ from typing import Generator
 import requests
 from bs4 import BeautifulSoup
 
+from fudowatch.common import get_secret, send_line
 from fudowatch.storage_access import FiresoreClient
 
 
 class Fudosan():
 
     def __init__(self, name='', price=-1, rent=-1.0, parkings=0, url_detail='',
-                 url_image='', else_data_list=[]):
+                 url_image='', else_data_list=[], is_posted=False):
         self.name = name
         self.price = price
         self.rent = rent
@@ -22,6 +23,7 @@ class Fudosan():
         self.url_detail = url_detail
         self.url_image = url_image
         self.else_data_list = else_data_list
+        self.is_posted = is_posted
 
 
 def get_numbers_first(s: str) -> int:
@@ -132,18 +134,29 @@ def akiyabank_nagato_main():
         config_ini_path = 'config.ini'
         config_ini = read_config(config_ini_path)
 
-        # 空き家情報を取得
-        load_url = config_ini.get('DEFAULT', 'Url')
+        load_url = config_ini.get('AKIYABANK_NAGATO', 'Url')
+        collection_name = config_ini.get('AKIYABANK_NAGATO', 'Collection')
+
         # Generetorにパース
         fudosan_gen = get_fudosan_generator(get_soup(load_url))
 
         # FireStoreのDocument一覧を取得
-        project_name = os.getenv('GCLOUD_PROJECT')
-        client = FiresoreClient()
+        project_id = os.getenv('GCLOUD_PROJECT')
+        line_token = get_secret('fudowatch', 'LINE', '1')
 
-        # 空き家情報を格納
-        client.add_document_list(
-            f'{project_name}/akiyabank_nagato/fudo_list', 'name', fudosan_gen)
+        client = FiresoreClient(project_id)
+
+        # documentを比較
+        for f in fudosan_gen:
+            # すでに登録されている情報を取得
+            doc = client.get_document(collection_name, f.name)
+            # すでに登録されている場合
+            if doc.exists:
+                pre_f = Fudosan(**doc.to_dict())
+            # 登録されていない場合
+            else:
+                client.set_document(collection_name, 'name', f)
+                send_line(line_token, f.__dict__)
 
     except Exception:
         print(traceback.format_exc())
