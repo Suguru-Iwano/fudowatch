@@ -18,7 +18,7 @@ def test_Fudosan():
     assert fudosan.url_detail == ''
     assert fudosan.url_image == ''
     assert fudosan.else_data_list == []
-    assert fudosan.is_published == False
+    assert fudosan.is_published == True
 
 
 def test_Fudosan_from_dict():

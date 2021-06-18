@@ -11,22 +11,20 @@ from bs4 import BeautifulSoup
 from fudowatch.common import get_secret, send_message
 from fudowatch.storage_access import FiresoreClient
 
-SYSTEM_NAME = '空き家バンク長門市'
-
 
 class Fudosan():
 
     def __init__(self, id='', name='', price=-1, rent=-1.0, parkings=0, url_detail='',
-                 url_image='', else_data_list=[], is_published=False):
-        self.id = id
-        self.name = name
-        self.price = price
+                 url_image='', else_data_list=[], is_published=True):
+        self.id = id  # 必須
+        self.name = name  # 必須
+        self.price = price  # 必須
         self.rent = rent
-        self.parkings = parkings
-        self.url_detail = url_detail
+        self.parkings = parkings  # 必須
+        self.url_detail = url_detail  # 必須
         self.url_image = url_image
         self.else_data_list = else_data_list
-        self.is_published = is_published
+        self.is_published = is_published  # 必須
 
 
 def get_numbers_first(s: str) -> int:
@@ -160,9 +158,10 @@ def akiyabank_nagato_main():
         for f in fudosan_gen:
             # すでに登録されている情報を取得
             pre_f = fudosan_collection.document(f.id).get()
+            # 公開物件リストに登録
+            published_id_list.append(pre_f.id)
             # すでに登録されている場合
             if pre_f.exists:
-                published_id_list.append(pre_f.id)
                 # 変更がある場合
                 if pre_f._data != f.__dict__:
                     pre_f_obj = Fudosan(**pre_f.to_dict())
@@ -172,9 +171,9 @@ def akiyabank_nagato_main():
             else:
                 client.set_document(collection_name, 'id', f)
                 message = f"""
-[{SYSTEM_NAME}]新しい物件情報があります。
-物件名:{f.name}
-価格:{f.price}
+新しい物件情報があります。
+物件名: {f.name}
+売値: 　{f.price}万円
 {f.url_detail}"""
                 send_message(line_token, message)
 
