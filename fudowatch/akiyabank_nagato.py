@@ -3,7 +3,6 @@ import errno
 import os
 import re
 import traceback
-from pydoc import doc
 from typing import Generator
 
 import requests

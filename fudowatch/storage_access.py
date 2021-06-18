@@ -1,6 +1,4 @@
-
-from os import getenv
-from typing import Any, AnyStr, Generator, List, Union
+from typing import Any, Generator, List, Union
 
 import firebase_admin
 from firebase_admin import credentials, firestore
