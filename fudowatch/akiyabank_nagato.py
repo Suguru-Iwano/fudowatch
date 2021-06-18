@@ -9,7 +9,7 @@ from typing import Generator
 import requests
 from bs4 import BeautifulSoup
 
-from fudowatch.common import get_secret, send_line
+from fudowatch.common import get_secret, send_message
 from fudowatch.storage_access import FiresoreClient
 
 SYSTEM_NAME = '空き家バンク長門市'
@@ -177,7 +177,7 @@ def akiyabank_nagato_main():
 物件名:{f.name}
 価格:{f.price}
 {f.url_detail}"""
-                send_line(line_token, message)
+                send_message(line_token, message)
 
         # 非公開になった物件を更新
         for f in doc_is_pub.stream():

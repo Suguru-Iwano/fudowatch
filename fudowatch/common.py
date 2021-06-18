@@ -10,7 +10,7 @@ def get_secret(project_id: str, secret_name: str, secret_ver: str) -> str:
     return response.payload.data.decode("UTF-8")
 
 
-def send_line(token: str, message: str) -> Response:
+def send_message(token: str, message: str) -> Response:
     url = "https://notify-api.line.me/api/notify"
     headers = {'Authorization': 'Bearer ' + str(token)}
 

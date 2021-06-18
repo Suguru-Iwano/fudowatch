@@ -1,6 +1,6 @@
 
 import pytest
-from fudowatch.common import get_secret, send_line
+from fudowatch.common import get_secret, send_message
 
 
 def test_get_secret():
@@ -15,12 +15,12 @@ def test_get_secret():
     assert secret_str == 'Able to get secret.'
 
 
-def test_send_line():
+def test_send_message():
     res = None
     token = get_secret('fudowatch', 'LINE', '1')
     # 例外が起こらないことを確認
     try:
-        res = send_line(token, 'Test')
+        res = send_message(token, 'Test')
 
     except Exception as e:
         pytest.fail(e.__class__.__name__ + ': ' + str(e))
