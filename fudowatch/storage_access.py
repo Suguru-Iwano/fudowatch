@@ -4,6 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 
+# TODO:タイムスタンプ実装
 class FiresoreClient():
 
     def __init__(self, project_id: Any):
