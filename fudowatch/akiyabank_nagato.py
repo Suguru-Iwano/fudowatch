@@ -3,6 +3,7 @@ import errno
 import os
 import re
 import traceback
+from pydoc import doc
 from typing import Generator
 
 import requests
@@ -11,11 +12,14 @@ from bs4 import BeautifulSoup
 from fudowatch.common import get_secret, send_line
 from fudowatch.storage_access import FiresoreClient
 
+SYSTEM_NAME = '空き家バンク長門市'
+
 
 class Fudosan():
 
-    def __init__(self, name='', price=-1, rent=-1.0, parkings=0, url_detail='',
-                 url_image='', else_data_list=[], is_posted=False):
+    def __init__(self, id='', name='', price=-1, rent=-1.0, parkings=0, url_detail='',
+                 url_image='', else_data_list=[], is_published=False):
+        self.id = id
         self.name = name
         self.price = price
         self.rent = rent
@@ -23,7 +27,7 @@ class Fudosan():
         self.url_detail = url_detail
         self.url_image = url_image
         self.else_data_list = else_data_list
-        self.is_posted = is_posted
+        self.is_published = is_published
 
 
 def get_numbers_first(s: str) -> int:
@@ -53,7 +57,7 @@ def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
         # １列目
         th = tr.find('th')
         col_1_a = th.find('a')
-        fudosan.name = col_1_a.text.strip()
+        fudosan.id = fudosan.name = col_1_a.text.strip()
         fudosan .url_detail = col_1_a['href'].strip()
         # ２列目
         td_list = tr.find_all('td')
@@ -112,6 +116,7 @@ def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
 
         else_data_list = info_list
         fudosan.else_data_list = else_data_list
+        fudosan.is_published = True
 
         yield fudosan
 
@@ -140,23 +145,45 @@ def akiyabank_nagato_main():
         # Generetorにパース
         fudosan_gen = get_fudosan_generator(get_soup(load_url))
 
-        # FireStoreのDocument一覧を取得
         project_id = os.getenv('GCLOUD_PROJECT')
         line_token = get_secret('fudowatch', 'LINE', '1')
 
         client = FiresoreClient(project_id)
+        # 物件情報を取得
+        fudosan_collection = client.get_collection(collection_name)
 
-        # documentを比較
+        # 公開されている物件情報を取得しておく（fudosan_genにないものをFalseしたい）
+        doc_is_pub = fudosan_collection.where(
+            u'is_published', u'==', True)
+
+        published_id_list = []
+
         for f in fudosan_gen:
             # すでに登録されている情報を取得
-            doc = client.get_document(collection_name, f.name)
+            pre_f = fudosan_collection.document(f.id).get()
             # すでに登録されている場合
-            if doc.exists:
-                pre_f = Fudosan(**doc.to_dict())
+            if pre_f.exists:
+                published_id_list.append(pre_f.id)
+                # 変更がある場合
+                if pre_f._data != f.__dict__:
+                    pre_f_obj = Fudosan(**pre_f.to_dict())
+                    # 登録
+
             # 登録されていない場合
             else:
-                client.set_document(collection_name, 'name', f)
-                send_line(line_token, f.__dict__)
+                client.set_document(collection_name, 'id', f)
+                message = f"""
+[{SYSTEM_NAME}]新しい物件情報があります。
+物件名:{f.name}
+価格:{f.price}
+{f.url_detail}"""
+                send_line(line_token, message)
+
+        # 非公開になった物件を更新
+        for f in doc_is_pub.stream():
+            if f.id not in published_id_list:
+                fudosan_collection.document(
+                    f.id).update({'is_published': False})
 
     except Exception:
         print(traceback.format_exc())

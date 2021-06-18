@@ -18,17 +18,20 @@ class FiresoreClient():
             })
         self.db = firestore.client()
 
+    def get_collection(self, collection_name: str):
+        return self.db.collection(collection_name)
+
     def get_document_list(self, collection_name: str):
-        return self.db.collection(collection_name).stream()
+        return self.get_collection(collection_name).stream()
 
     def get_document(self, collection_name: str, document_name: str):
-        return self.db.collection(collection_name).document(document_name).get()
+        return self.get_collection(collection_name).document(document_name).get()
 
-    def set_document(self, collection_name: str, document_param_name: str, obj: Any):
+    def set_document(self, collection_name: str, document_param_id: str, obj: Any):
         collection = self.db.collection(collection_name)
         obj_dict = obj.__dict__
         # object のパラメータに動的にアクセスしたい
-        doc_ref = collection.document(obj_dict[document_param_name])
+        doc_ref = collection.document(obj_dict[document_param_id])
         doc_ref.set(obj_dict)
 
     def set_document_list(self, collection_name: str, document_param_name: str,
