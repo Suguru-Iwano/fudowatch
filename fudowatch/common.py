@@ -31,6 +31,8 @@ def read_config(config_ini_path: str) -> configparser.ConfigParser:
 
 def get_soup(load_url: str) -> BeautifulSoup:
     html = requests.get(load_url)
+    if html.status_code != 200:
+        raise ValueError
     return BeautifulSoup(html.content, 'html.parser', from_encoding='utf-8')
 
 
