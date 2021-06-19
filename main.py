@@ -12,7 +12,7 @@ from fudowatch.storage_access import FiresoreClient
 def whether_to_notify(f: Fudosan):
     """通知するかどうか決定する
     """
-    return True
+    return -1 < f.price < 400
 
 
 def notify(f: Fudosan, messenger_token):
@@ -21,8 +21,9 @@ def notify(f: Fudosan, messenger_token):
     if whether_to_notify(f):
         message = f"""
 新しい物件情報があります。
-物件名: {f.name}
-売値: 　{f.price}万円
+物件名:　{f.name}
+売値:　　{f.price}万円
+駐車台数:{f.parkings}台
 {f.url_detail}"""
         send_message(messenger_token, message)
 
