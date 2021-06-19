@@ -4,17 +4,29 @@ import traceback
 from fudowatch.akiyabank_nagato import get_fudosan_generator
 from fudowatch.common import (get_pubsub_message, get_secret, get_soup,
                               read_config, send_message)
-from fudowatch.fudosan_data import Fudosan, Fudosan_akiyabank_nagato
+from fudowatch.fudosan_data import *  # 文字列でクラスが呼ばれるため、全てのクラスをimportしておく
 from fudowatch.storage_access import FiresoreClient
 
 
 def whether_to_notify(f: Fudosan):
     """通知するかどうか決定する
     """
+    return True
+
+
+def notify(f: Fudosan, messenger_token):
+    """whether_to_notifyの時のみ、通知する
+    """
+    if whether_to_notify(f):
+        message = f"""
+新しい物件情報があります。
+物件名: {f.name}
+売値: 　{f.price}万円
+{f.url_detail}"""
+        send_message(messenger_token, message)
 
 
 def main(event, context):
-    # TODO:引数で監視サイト切り替え
 
     site_to_monitor = get_pubsub_message(event)
 
@@ -29,13 +41,13 @@ def main(event, context):
         messenger_token_key_version = config_ini.get(
             'common', 'Messenger_token_key_version')
 
-        # 物件情報サイトの物件リストを、Generetorにパース
-        # ここのみサイト毎に変わる
-        fudosan_gen = get_fudosan_generator(get_soup(load_url))
-
         project_id = os.getenv('GCLOUD_PROJECT') or ''
         messenger_token = get_secret(
             project_id, messenger_token_key, messenger_token_key_version)
+
+        # 物件情報サイトの物件リストを、Generetorにパース
+        # ここのみサイト毎に変わる
+        fudosan_gen = get_fudosan_generator(get_soup(load_url))
 
         client = FiresoreClient(project_id)
         # 物件情報を取得
@@ -61,18 +73,15 @@ def main(event, context):
                     pre_f_obj = globals()['Fudosan_' +
                                           site_to_monitor](**pre_f.to_dict())
                     # 登録
-                    # TODO:物件情報変更時の登録・通知
+                    client.set_document(collection_name, 'id', f)
+                    # 変更が値段の時、通知
+                    if pre_f_obj.price != f.price:
+                        notify(f, messenger_token)
 
-                    # 登録されていない場合
+            # 登録されていない場合
             else:
-                # TODO:通知する物件の絞り込み
                 client.set_document(collection_name, 'id', f)
-                message = f"""
-新しい物件情報があります。
-物件名: {f.name}
-売値: 　{f.price}万円
-{f.url_detail}"""
-                send_message(messenger_token, message)
+                notify(f, messenger_token)
 
         # 非公開になった物件を更新
         for f in doc_is_pub.stream():
