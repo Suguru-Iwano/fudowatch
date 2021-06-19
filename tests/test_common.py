@@ -9,7 +9,7 @@ def test_get_soup():
         get_soup('https://www.google.com/?hl=ja')
 
     except Exception as e:
-        pytest.fail(e.__class__.__name__ + ': ' + str(e))
+        pytest.fail(str(e))
 
 
 def test_read_config():
@@ -39,7 +39,7 @@ def test_get_secret():
         secret_str = get_secret('fudowatch', 'TEST', '1')
 
     except Exception as e:
-        pytest.fail(e.__class__.__name__ + ': ' + str(e))
+        pytest.fail(str(e))
 
     assert secret_str == 'Able to get secret.'
 
@@ -52,6 +52,6 @@ def test_send_message():
         res = send_message(token, 'Test')
 
     except Exception as e:
-        pytest.fail(e.__class__.__name__ + ': ' + str(e))
+        pytest.fail(str(e))
 
     assert res.status_code == 200

@@ -2,25 +2,40 @@ import os
 import traceback
 
 from fudowatch.akiyabank_nagato import get_fudosan_generator
-from fudowatch.common import get_secret, get_soup, read_config, send_message
+from fudowatch.common import (get_pubsub_message, get_secret, get_soup,
+                              read_config, send_message)
+from fudowatch.fudosan_data import Fudosan, Fudosan_akiyabank_nagato
 from fudowatch.storage_access import FiresoreClient
+
+
+def whether_to_notify(f: Fudosan):
+    """通知するかどうか決定する
+    """
 
 
 def main(event, context):
     # TODO:引数で監視サイト切り替え
+
+    site_to_monitor = get_pubsub_message(event)
+
     try:
-        # iniの値取得
+        # 設定値を取得
         config_ini_path = 'config.ini'
         config_ini = read_config(config_ini_path)
+        # PubSubのメッセージ = 設定値区分
+        load_url = config_ini.get(site_to_monitor, 'Url')
+        collection_name = config_ini.get(site_to_monitor, 'Collection')
+        messenger_token_key = config_ini.get('common', 'Messenger_token_key')
+        messenger_token_key_version = config_ini.get(
+            'common', 'Messenger_token_key_version')
 
-        load_url = config_ini.get('AKIYABANK_NAGATO', 'Url')
-        collection_name = config_ini.get('AKIYABANK_NAGATO', 'Collection')
-
-        # Generetorにパース
+        # 物件情報サイトの物件リストを、Generetorにパース
+        # ここのみサイト毎に変わる
         fudosan_gen = get_fudosan_generator(get_soup(load_url))
 
-        project_id = os.getenv('GCLOUD_PROJECT')
-        messenger_token = get_secret('fudowatch', 'LINE', '1')
+        project_id = os.getenv('GCLOUD_PROJECT') or ''
+        messenger_token = get_secret(
+            project_id, messenger_token_key, messenger_token_key_version)
 
         client = FiresoreClient(project_id)
         # 物件情報を取得
@@ -42,8 +57,9 @@ def main(event, context):
             if pre_f.exists:
                 # 変更がある場合
                 if pre_f._data != f.__dict__:
-                    pass
-                    #pre_f_obj = Fudosan(**pre_f.to_dict())
+                    # 文字列からクラスを生成
+                    pre_f_obj = globals()['Fudosan_' +
+                                          site_to_monitor](**pre_f.to_dict())
                     # 登録
                     # TODO:物件情報変更時の登録・通知
 

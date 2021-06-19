@@ -1,3 +1,4 @@
+import base64
 import configparser
 import errno
 import os
@@ -7,6 +8,13 @@ import requests
 from bs4 import BeautifulSoup
 from google.cloud import secretmanager
 from requests.models import Response
+
+
+def get_pubsub_message(event) -> str:
+    if 'data' in event:
+        return base64.b64decode(event['data']).decode('utf-8')
+    else:
+        return ''
 
 
 def read_config(config_ini_path: str) -> configparser.ConfigParser:

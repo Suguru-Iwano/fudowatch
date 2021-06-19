@@ -1,56 +1,10 @@
+import base64
 from typing import Generator
 
 import pytest
 from bs4 import BeautifulSoup
-from fudowatch.akiyabank_nagato import Fudosan, get_fudosan_generator
-from fudowatch.common import read_config
+from fudowatch.akiyabank_nagato import get_fudosan_generator
 from main import main
-
-
-def test_Fudosan():
-    fudosan = Fudosan()
-    # 初期値確認
-    assert fudosan.name == ''
-    assert fudosan.price == -1
-    assert fudosan.rent == -1
-    assert fudosan.parkings == 0
-    assert fudosan.url_detail == ''
-    assert fudosan.url_image == ''
-    assert fudosan.else_data_list == []
-    assert fudosan.is_published == True
-
-
-def test_Fudosan_from_dict():
-    d = {'name': 'name',
-         'price': 1,
-         # 'rent': 2,
-         'parkings': 3,
-         'url_detail': 'http://detail',
-         # 'url_image': 'http://image',
-         'else_data_list': ['one', 'two']
-         }
-
-    fudosan = Fudosan(**d)
-    assert fudosan.name == 'name'
-    assert fudosan.price == 1
-    assert fudosan.rent == -1
-    assert fudosan.parkings == 3
-    assert fudosan.url_detail == 'http://detail'
-    assert fudosan.url_image == ''
-    assert fudosan.else_data_list == ['one', 'two']
-
-
-def test_read_config():
-    load_url = None
-    # 例外が起こらないことを確認
-    try:
-        config_ini = read_config('config.ini')
-        load_url = config_ini.get('AKIYABANK_NAGATO', 'Url')
-
-    except Exception as e:
-        pytest.fail(e.__class__.__name__ + ': ' + str(e))
-
-    assert load_url
 
 
 def test_get_fudosan_generator():
@@ -64,7 +18,7 @@ def test_get_fudosan_generator():
             fudosan_gen = get_fudosan_generator(soup)
 
     except Exception as e:
-        pytest.fail(e.__class__.__name__ + ': ' + str(e))
+        pytest.fail(str(e))
 
     fudosan_1 = next(fudosan_gen)
     # スペースで囲まれている場合、stripされることの確認
@@ -113,7 +67,9 @@ def test_get_fudosan_generator():
 def test_akiyabank_nagato():
     # 例外が起こらないことを確認
     try:
-        main(None, None)
+        bytes_data = b'akiyabank_nagato'
+        b64encoded = base64.b64encode(bytes_data)
+        main({'data': b64encoded}, None)
 
     except Exception as e:
-        pytest.fail(e.__class__.__name__ + ': ' + str(e))
+        pytest.fail(str(e))
