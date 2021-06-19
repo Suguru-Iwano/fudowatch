@@ -4,9 +4,10 @@ class Fudosan():
     このクラスを継承し、パラメータを追加する
     """
 
-    def __init__(self, id='', name='', price=-1, rent=-1.0, parkings=0, url_detail='', url_image='', else_data_list=[], is_published=True):
-        self.id = id  # document名　各サイト内で一意である必要がある
+    def __init__(self, id='', name='', site='', price=-1, rent=-1.0, parkings=0, url_detail='', url_image='', else_data_list=[], is_published=True):
+        self.id = id  # document名　全サイト内で一意である必要がある
         self.name = name  # 物件の名前
+        self.site = site  # 監視対象サイト名
         self.price = price  # 物件の売値
         self.rent = rent  # 物件の賃料
         self.parkings = parkings   # 駐車可能台数
@@ -17,6 +18,6 @@ class Fudosan():
 
 
 class Fudosan_akiyabank_nagato(Fudosan):
-    def __init__(self, id='', name='', price=-1, rent=-1.0, parkings=0, url_detail='', url_image='', else_data_list=[], is_published=True):
-        super().__init__(id, name, price, rent, parkings,
+    def __init__(self, id='', name='', site='', price=-1, rent=-1.0, parkings=0, url_detail='', url_image='', else_data_list=[], is_published=True):
+        super().__init__(id, name, site, price, rent, parkings,
                          url_detail, url_image, else_data_list, is_published)

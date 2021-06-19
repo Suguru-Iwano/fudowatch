@@ -1,10 +1,8 @@
-import base64
 from typing import Generator
 
 import pytest
 from bs4 import BeautifulSoup
 from fudowatch.akiyabank_nagato import get_fudosan_generator
-from main import main
 
 
 def test_get_fudosan_generator():
@@ -62,14 +60,3 @@ def test_get_fudosan_generator():
     assert fudosan_5.rent == -1
     assert fudosan_5.parkings == 0
     assert fudosan_5.else_data_list == ['畑付き', '家財撤去済']
-
-
-def test_akiyabank_nagato():
-    # 例外が起こらないことを確認
-    try:
-        bytes_data = b'akiyabank_nagato'
-        b64encoded = base64.b64encode(bytes_data)
-        main({'data': b64encoded}, None)
-
-    except Exception as e:
-        pytest.fail(str(e))

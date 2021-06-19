@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 from fudowatch.common import get_numbers_first
 from fudowatch.fudosan_data import Fudosan_akiyabank_nagato
 
+SITE = 'akiyabank_nagato'
+
 
 def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
     # 空き家テーブルを取得
@@ -13,11 +15,12 @@ def get_fudosan_generator(soup: BeautifulSoup) -> Generator:
     # tr(行) ループ
     for tr in table.find_all('tr'):
         # 空き家情報取得
-        fudosan = Fudosan_akiyabank_nagato()
+        fudosan = Fudosan_akiyabank_nagato(site=SITE)
         # １列目
         th = tr.find('th')
         col_1_a = th.find('a')
-        fudosan.id = fudosan.name = col_1_a.text.strip()
+        fudosan.name = col_1_a.text.strip()
+        fudosan.id = SITE + ' ' + fudosan.name
         fudosan.url_detail = col_1_a['href'].strip()
         # ２列目
         td_list = tr.find_all('td')

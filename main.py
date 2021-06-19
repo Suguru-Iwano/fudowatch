@@ -1,6 +1,7 @@
 import os
 import traceback
 
+# TODO:ここのimoprtを動的に呼び出したい
 from fudowatch.akiyabank_nagato import get_fudosan_generator
 from fudowatch.common import (get_pubsub_message, get_secret, get_soup,
                               read_config, send_message)
