@@ -101,7 +101,7 @@ def main(event, context):
                 del(pre_f_dic['timestamp_added'])
                 pre_f_obj = globals()['Fudosan_' +
                                       site_to_monitor](**pre_f_dic)
-                if pre_f_obj.__dict__ != pre_f.__dict__:
+                if pre_f_obj.__dict__ != f.__dict__:
                     # 値段が変更された場合、通知
                     if pre_f_obj.price != f.price:
                         notify_update(f, pre_f_obj, messenger_token)
