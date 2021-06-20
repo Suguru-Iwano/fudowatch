@@ -20,9 +20,9 @@ steps:
       - gcloud
       - functions
       - deploy
-      - akiyabank_nagato
+      - fudowatch
       - --region=asia-northeast1
       - --source=.
-      - --entry-point=akiyabank_nagato
+      - --entry-point=main
       - --runtime=python38
       - --trigger-topic=start_watch

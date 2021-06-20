@@ -28,4 +28,4 @@ def test_storage_access():
             'test/storage_access/set_document_list', 'name', test_obj_list)
 
     except Exception as e:
-        pytest.fail(e.__class__.__name__ + ': ' + str(e))
+        pytest.fail(str(e))
