@@ -4,7 +4,7 @@ import pytest
 from main import main
 
 
-def test_akiyabank_nagato():
+def test_main():
     # 例外が起こらないことを確認
     try:
         bytes_data = b'akiyabank_nagato'
