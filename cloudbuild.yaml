@@ -26,3 +26,6 @@ steps:
       - --entry-point=main
       - --runtime=python38
       - --trigger-topic=start_watch
+    env:
+      - 'PROJECT=$PROJECT_ID'
+      - 'GCLOUD_PROJECT=$PROJECT_ID'
